@@ -8,16 +8,17 @@ HOST=comma
 touch /TICI
 touch /AGNOS
 
-# Add armhf as supported architecture
-dpkg --add-architecture armhf
-
 # Install apt-fast
-apt-get update
+apt-get update -yq
 apt-get install -yq curl sudo wget
 bash -c "$(curl -sL https://git.io/vokNn)"
 
+# Add armhf as supported architecture
+dpkg --add-architecture armhf
+
 # Install packages
 export DEBIAN_FRONTEND=noninteractive
+apt-fast update -yq
 apt-fast install --no-install-recommends -yq locales systemd adduser
 
 # Create privileged user
@@ -50,29 +51,10 @@ echo "comma - nice -10" >> /etc/security/limits.conf
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 
-apt-fast upgrade -yq
 apt-fast install --no-install-recommends -yq \
-    alsa-utils \
-    apport-retrace \
-    bc \
     build-essential \
-    bzip2 \
-    curl \
     chrony \
-    cpuset \
-    dfu-util \
-    evtest \
-    git \
-    git-core \
-    git-lfs \
     gdb \
-    htop \
-    i2c-tools \
-    ifmetric \
-    ifupdown \
-    iptables-persistent \
-    jq \
-    landscape-common \
     libi2c-dev \
     libqmi-utils \
     libtool \
@@ -84,31 +66,9 @@ apt-fast install --no-install-recommends -yq \
     libssl-dev \
     libffi-dev \
     llvm \
-    nano \
-    net-tools \
     nload \
-    network-manager \
-    nvme-cli \
-    openssl \
-    ppp \
-    smartmontools \
-    speedtest-cli \
-    ssh \
-    sshfs \
-    sudo \
-    systemd-resolved \
-    traceroute \
     tk-dev \
-    ubuntu-minimal \
-    ubuntu-server \
-    ubuntu-standard \
-    udev \
-    udhcpc \
-    wget \
-    wireless-tools \
     zlib1g-dev
-
-rm -rf /var/lib/apt/lists/*
 
 # Allow chrony to make a big adjustment to system time on boot
 echo "makestep 0.1 3" >> /etc/chrony/chrony.conf
@@ -127,7 +87,6 @@ echo "comma ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 ln -sf /bin/bash /bin/sh
 
 # Install necessary libs
-apt-fast update -yq
 apt-fast install --no-install-recommends -yq \
     libacl1:armhf \
     libasan6-armhf-cross \
@@ -202,3 +161,4 @@ apt-fast install --no-install-recommends -yq \
     hostapd \
     libgtk2.0-dev \
     libxml2:armhf \
+
